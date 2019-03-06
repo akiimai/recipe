@@ -1,45 +1,75 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Main.css';
+import * as recipeSearch from './services/recipeSearch';
 
 class Main extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            title: '', 
+            data: []
+        }
+    }
+
+    onChange = (evt) => {
+        this.setState({
+            title: evt.target.value
+        })
+    }
+
+    onSubmit = (evt) => {
+        evt.preventDefault(); 
+        const data = {
+            title: this.state.title
+        }
+
+        recipeSearch.getRecipeByTitle(data)
+            .then((response) => {
+                this.setState({
+                    data: response
+                })
+            })
+            .catch(console.log)
+    }
+
     render() {
+        let list = this.state.data 
+        ? this.state.data.map(item => {
+            return (
+                <div key={item.id}>
+                    <div>
+                        <img src={item.image} />
+                    </div>
+                    <div>
+                        <h2>{item.title}</h2>
+                    </div>
+                </div>
+            )
+        }) 
+        : "in progress"
+
         return (
             <React.Fragment>
                 <div className="container form-container">
                 <form>
                     <div className="form-group row">
-                        <label for="cuisine" className="col-sm-2 col-form-label">Cuisine</label>
+                        <label htmlFor="title" className="col-sm-2 col-form-label">Recipe Name</label>
                         <div className="col-sm-10">
-                            <input type="text" className="form-control" id="cuisine" placeholder="Cuisine" />
+                            <input type="text" className="form-control" id="title" placeholder="Recipe Name" value={this.state.title} onChange={this.onChange} />
                         </div>
                     </div>
-                    <fieldset className="form-group">
-                        <div className="row">
-                            <legend className="col-form-label col-sm-2 pt-0">Radios</legend>
-                            <div className="col-sm-10">
-                                <div className="form-check">
-                                    <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked />
-                                    <label className="form-check-label" for="gridRadios1">
-                                        First radio
-                                    </label>
-                                </div>
-                                <div className="form-group col-md-4">
-                                    <label for="inputState">State</label>
-                                    <select id="inputState" className="form-control">
-                                        <option selected>Choose...</option>
-                                        <option>...</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
                     <div className="form-group row">
                         <div className="col-sm-10">
-                            <button type="submit" className="btn btn-primary">Sign in</button>
+                            <button type="submit" className="btn btn-primary" onClick={this.onSubmit}>Search</button>
                         </div>
                     </div>
                 </form>
+                </div>
+
+                <div>
+                    {list}
                 </div>
             </React.Fragment>
         )

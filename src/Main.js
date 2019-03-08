@@ -27,6 +27,7 @@ class Main extends Component {
 
         recipeSearch.getRecipeByTitle(data)
             .then((response) => {
+                console.log(response);
                 this.setState({
                     data: response
                 })
@@ -40,7 +41,7 @@ class Main extends Component {
             return (
                 <div key={item.id}>
                     <div>
-                        <img src={item.image} />
+                        <img src={"http://webknox.com/recipeImages/" + item.image} alt={item.title} />
                     </div>
                     <div>
                         <h2>{item.title}</h2>

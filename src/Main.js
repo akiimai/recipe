@@ -12,33 +12,43 @@ class Main extends Component {
             title: '',
             data: [],
             dietRestrictions: dietRestrictions,
-            inputField: []
+            include: []
         }
     }
 
-    constonChange = evt => {
+    onChange = evt => {
         this.setState({
             title: evt.target.value
+        })
+    }
+    
+    handleInclude = (evt, index) => {
+        evt.preventDefault();
+        let includeIngredients = [...this.state.include]
+        includeIngredients[index] = evt.target.value; 
+        this.setState({
+            include: includeIngredients
         })
     }
 
     addField = evt => {
         evt.preventDefault();
-        let inputField = this.state.inputField.concat([''])
+        let include = this.state.include.concat([""])
         this.setState({
-            inputField
+            include
         })
     }; 
 
     deleteField = (evt, index) => {
-        console.log(index)
         evt.preventDefault();
-        let inputField = [
-            ...this.state.inputField.slice(0, index), 
-            ...this.state.inputField.slice(index + 1)
-        ] 
+        this.state.include.splice(index, 1)
+        // let include = [
+        //     ...this.state.include.slice(0, index), 
+        //     ...this.state.include.slice(index + 1)
+        // ] 
         this.setState({
-            inputField
+            include: this.state.include
+            // include
         })
     }
 
@@ -66,12 +76,12 @@ class Main extends Component {
     }
 
     render() {
-        let addField = this.state.inputField.map((item, index) => {
+        let addField = this.state.include.map((item, index) => {
             return (
                 <div className="form-group row" key={index}>
                     <div className="col-sm-4"></div>
                     <div className="col-sm-8" style={{ display: "flex" }}>
-                        <input type="text" className="form-control" placeholder={item} />
+                        <input type="text" className="form-control" value={item} placeholder="" onChange={e => this.handleInclude(e, index)} />
                         <span onClick={e => this.deleteField(e, index)}><i className="fas fa-times delete-btn"></i></span>
                     </div>
                 </div>
@@ -135,7 +145,7 @@ class Main extends Component {
                         <div className="form-group row">
                             <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:</label>
                             <div className="col-sm-8" style={{ display: "flex" }}>
-                                <input type="text" className="form-control" id="ingredient-exclude" />
+                                <input type="text" className="form-control" id="ingredient-exclude" placeholder="Optional" />
                                 <button type="button" className="btn form-btn"><i className='fas fa-plus'></i></button>
                             </div>
                         </div>

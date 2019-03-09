@@ -14,3 +14,16 @@
 .recipeImg {
     height: 250px
 }
+
+.delete-btn {
+    position: absolute; 
+    margin: 10px; 
+    right: 15px; 
+    color: #BABABA
+}
+
+.form-btn {
+    border-radius: 50%; 
+    background-color: #FFF; 
+    margin-left: 5px; 
+}

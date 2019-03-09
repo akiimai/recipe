@@ -11,19 +11,35 @@ class Main extends Component {
         this.state = {
             title: '',
             data: [],
-            dietRestrictions: dietRestrictions
+            dietRestrictions: dietRestrictions,
+            inputField: []
         }
     }
 
-    onChange = evt => {
+    constonChange = evt => {
         this.setState({
             title: evt.target.value
         })
     }
 
-    addInput = () => {
-        let include = document.getElementsByClassName('includeIngredient'); 
+    addField = evt => {
+        evt.preventDefault();
+        let inputField = this.state.inputField.concat([''])
+        this.setState({
+            inputField
+        })
+    }; 
 
+    deleteField = (evt, index) => {
+        console.log(index)
+        evt.preventDefault();
+        let inputField = [
+            ...this.state.inputField.slice(0, index), 
+            ...this.state.inputField.slice(index + 1)
+        ] 
+        this.setState({
+            inputField
+        })
     }
 
     onSubmit = evt => {
@@ -50,10 +66,22 @@ class Main extends Component {
     }
 
     render() {
+        let addField = this.state.inputField.map((item, index) => {
+            return (
+                <div className="form-group row" key={index}>
+                    <div className="col-sm-4"></div>
+                    <div className="col-sm-8" style={{ display: "flex" }}>
+                        <input type="text" className="form-control" placeholder={item} />
+                        <span onClick={e => this.deleteField(e, index)}><i className="fas fa-times delete-btn"></i></span>
+                    </div>
+                </div>
+            )
+        });
+
         let dietRestrictions = this.state.dietRestrictions.map(item => {
             return (
                 <div className="form-check form-check-inline" key={item.value}>
-                    <input type="checkbox" class="form-check-input" id={item.value} />
+                    <input type="checkbox" className="form-check-input" id={item.value} />
                     <label className="form-check-label" htmlFor={item.name}>{item.name}</label>
                 </div>
             )
@@ -64,7 +92,7 @@ class Main extends Component {
                 return (
                     <div className="row recipeItem" key={item.id}>
                         <div>
-                            <img class="recipeImg" src={"http://webknox.com/recipeImages/" + item.image} alt={item.title} />
+                            <img className="recipeImg" src={"http://webknox.com/recipeImages/" + item.image} alt={item.title} />
                         </div>
                         <div>
                             <h2>{item.title}</h2>
@@ -77,37 +105,43 @@ class Main extends Component {
         return (
             <React.Fragment>
                 <div className="container form-container">
-                    <h2 style={{textAlign: "center", paddingBottom: "30px"}}>What should I cook?</h2>
+                    <h2 style={{ textAlign: "center", paddingBottom: "30px" }}>What should I cook?</h2>
                     <form>
                         <div className="form-group row">
                             <label htmlFor="title" className="col-sm-4 col-form-label">Find a Recipe:</label>
                             <div className="col-sm-8">
-                                <input type="text" className="form-control" id="title" placeholder="Find a recipe" value={this.state.title} onChange={this.onChange} />
+                                <input type="text" className="form-control" id="title" placeholder="Find a recipe" defaultValue={this.state.title} onChange={this.onChange} />
                             </div>
                         </div>
                         <div className="form-group row">
                             <label htmlFor="restrictions" className="col-sm-4 col-form-label">Dietary Restrictions:</label>
-                            <div className="col-sm-8" style={{fontSize: "15px"}}>
+                            <div className="col-sm-8" style={{ fontSize: "15px" }}>
                                 {dietRestrictions}
                             </div>
                         </div>
+                        {/* Include Block */}
                         <div className="form-group row">
-                            <label htmlFor="ingr-include" className="col-sm-4 col-form-label">Include Ingredients:</label>
-                            <div className="col-sm-8 includeIngrdient" style={{display: "flex"}}>
-                                <input type="text" className="form-control" id="ingr-include" placeholder="Optional" />
-                                <button onClick={this.addInput}><i class='fas fa-plus'></i></button>
-                            </div> 
+                            <label htmlFor="ingredient-include" className="col-sm-4 col-form-label">Include Ingredients:</label>
+                            <div className="col-sm-8 includeIngredient" style={{ display: "flex" }}>
+                                <input type="text" className="form-control" id="ingredient-include" placeholder="Optional" />
+                                <button type="button" className="btn form-btn" onClick={this.addField}><i className='fas fa-plus'></i></button>
+                            </div>
                         </div>
+                        
+                        {addField}
+                        
+                        {/* Include Block End */}
+
                         <div className="form-group row">
-                            <label htmlFor="ingr-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:</label>
-                            <div className="col-sm-8" style={{display: "flex"}}>
-                                <input type="text" className="form-control" id="ingr-include" placeholder="Optional" />
-                                <button><i class='fas fa-plus'></i></button>
-                            </div> 
+                            <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:</label>
+                            <div className="col-sm-8" style={{ display: "flex" }}>
+                                <input type="text" className="form-control" id="ingredient-exclude" />
+                                <button type="button" className="btn form-btn"><i className='fas fa-plus'></i></button>
+                            </div>
                         </div>
-                        <div className="form-group row" style={{display: "flex", justifyContent: "center"}}>
+                        <div className="form-group row" style={{ display: "flex", justifyContent: "center" }}>
                             <div>
-                                <button type="submit" className="btn btn-primary" onClick={this.onSubmit} style={{width: "150px", marginTop: "40px"}}>Search</button>
+                                <button type="submit" className="btn btn-primary" onClick={this.onSubmit} style={{ width: "150px", marginTop: "40px" }}>Search</button>
                             </div>
                         </div>
                     </form>

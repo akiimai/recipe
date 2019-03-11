@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Main.css';
 import * as recipeSearch from './services/recipeSearch';
-import { dietRestrictions } from './data';
+import { diet, intolerances } from './data';
 
 class Main extends Component {
     constructor(props) {
@@ -10,7 +10,8 @@ class Main extends Component {
 
         this.state = {
             recipeName: '',
-            dietRestrictions: dietRestrictions,
+            diet: diet,
+            intolerances: intolerances,
             data: [],
             include: [],
             exclude: []
@@ -23,6 +24,22 @@ class Main extends Component {
             recipeName: evt.target.value
         })
     };
+
+    onCheckDiet = (evt, index) => {
+        let diet = [...this.state.diet]
+        diet[index].checked = evt.target.checked;
+        this.setState({
+            diet
+        })
+    };
+
+    onCheckIntolerances = (evt, index) => {
+        let intolerances = [...this.state.intolerances]
+        intolerances[index].checked = evt.target.checked;
+        this.setState({
+            intolerances
+        })
+    }
 
     handleInclude = (evt, index) => {
         evt.preventDefault();
@@ -127,14 +144,23 @@ class Main extends Component {
             )
         })
 
-        let dietRestrictions = this.state.dietRestrictions.map(item => {
+        let diet = this.state.diet.map((item, index) => {
             return (
-                <div className="form-check form-check-inline" key={item.value}>
-                    <input type="checkbox" className="form-check-input" id={item.value} />
+                <div className="form-check form-check-inline" key={index}>
+                    <input type="checkbox" className="form-check-input" checked={this.state.diet[index].checked} onChange={e => this.onCheckDiet(e, index)} />
                     <label className="form-check-label" htmlFor={item.name}>{item.name}</label>
                 </div>
             )
         });
+
+        let intolerances = this.state.intolerances.map((item, index) => {
+            return (
+                <div className="form-check form-check-inline" key={index}>
+                    <input type="checkbox" className="form-check-input" checked={this.state.intolerances[index].checked} onChange={e => this.onCheckIntolerances(e, index)} />
+                    <label className="form-check-label" htmlFor={item.name}>{item.name}</label>
+                </div>
+            )
+        })
 
         let list = this.state.data
             ? this.state.data.map(item => {
@@ -164,9 +190,15 @@ class Main extends Component {
                             </div>
                         </div>
                         <div className="form-group row">
-                            <label htmlFor="restrictions" className="col-sm-4 col-form-label">Dietary Restrictions:</label>
+                            <label htmlFor="restrictions" className="col-sm-4 col-form-label">Diet:</label>
                             <div className="col-sm-8" style={{ fontSize: "15px" }}>
-                                {dietRestrictions}
+                                {diet}
+                            </div>
+                        </div>
+                        <div className="form-group row">
+                            <label htmlFor="restrictions" className="col-sm-4 col-form-label">Intolerances:</label>
+                            <div className="col-sm-8" style={{ fontSize: "15px" }}>
+                                {intolerances}
                             </div>
                         </div>
                         {/* Include Block */}

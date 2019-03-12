@@ -102,7 +102,17 @@ class Main extends Component {
             recipeName: this.state.recipeName
         }
 
-        recipeSearch.getRecipeByName(data)
+        let diet = []; 
+        for (let i = 0; i < this.state.diet.length; i++) {
+            if (this.state.diet[i].checked === true) {
+                diet.push(this.state.diet[i].name)
+            }
+        }
+
+        let str = diet.toString().replace(',', "%2C+");
+        console.log(str); 
+
+        recipeSearch.getRecipeByName(data, str)
             .then((response) => {
                 console.log(response.results);
                 this.setState({
@@ -116,7 +126,7 @@ class Main extends Component {
             //         recipeSearch.getRecipeDetailsById(response.results[i].id)
             //     }
             // })
-            .catch(console.log)
+            // .catch(console.log)
     };
 
     render() {

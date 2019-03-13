@@ -110,9 +110,16 @@ class Main extends Component {
         }
 
         let str = diet.toString().replace(',', "%2C+");
-        console.log(str); 
 
-        recipeSearch.getRecipeByName(data, str)
+        let intolerances = []; 
+        for (let i = 0; i < this.state.intolerances.length; i++) {
+            if (this.state.intolerances[i].checked === true) {
+                intolerances.push(this.state.intolerances[i].name)
+            }
+        }
+        let str_2 = intolerances.toString().replace(",", "%2C+"); 
+
+        recipeSearch.getRecipeByName(data, str, str_2)
             .then((response) => {
                 console.log(response.results);
                 this.setState({

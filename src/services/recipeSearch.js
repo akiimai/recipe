@@ -4,8 +4,8 @@ const headers = {
     "X-RapidAPI-Key": "908ac684e4msh08a4c08f50317abp1a4e19jsn27c44c8339e4"
 }
 
-const getRecipeByName = (data, diet) => {
-    const url = "https://webknox-recipes.p.rapidapi.com/recipes/search?diet=" + diet + "&query=" + data.recipeName
+const getRecipeByName = (data, diet, intolerances) => {
+    const url = "https://webknox-recipes.p.rapidapi.com/recipes/search?diet=" + diet + "&intolerances=" + intolerances + "&query=" + data.recipeName
     const config = {
         method: "GET", 
         headers

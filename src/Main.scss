@@ -1,0 +1,37 @@
+$primary-color: #FFF; 
+$font-stack: Times; 
+
+.form-container {
+    width: 650px;
+    padding: 3% 3% 2% 2%;
+    margin-top: 5%;
+    background-color: #EFEFEF;
+}
+
+.space {
+  padding:0;
+}
+
+.recipeItem {
+    display: flex; 
+    justify-content: center;
+    padding: 20px; 
+}
+
+.recipeImg {
+    height: 250px
+}
+
+.delete-btn {
+    position: absolute; 
+    margin: 10px; 
+    right: 15px; 
+    color: #BABABA; 
+    cursor: pointer;
+}
+
+.form-btn {
+    border-radius: 50%; 
+    background-color: #FFF; 
+    margin-left: 5px; 
+}

@@ -21,25 +21,25 @@ class Main extends Component {
             data: {
                 recipeName: '',
                 dietSelect: '',
+                intolerances: '',
                 cuisineSelect: '',
                 typeSelect: '',
-                excludeIngredients: '',
-                intolerances: ''
+                includeIngredients: '',
+                excludeIngredients: ''
             },
             modalShow: false
         }
     }
 
     onRecipeName = (evt) => {
+        let data = { ...this.state.data };
+        data.recipeName = evt.target.value;
         this.setState({
-            data: { recipeName: evt.target.value }
+            data
         })
     };
 
     dietSelect = (evt) => {
-        console.log(evt.target.getAttribute('value'))
-
-        console.log(this.state.diet)
         let data = { ...this.state.data };
         data.dietSelect = evt.target.value;
         this.setState({
@@ -56,42 +56,46 @@ class Main extends Component {
     };
 
     typeSelect = (evt) => {
+        let data = { ...this.state.data };
+        data.typeSelect = evt.target.value;
         this.setState({
-            data: { recipeName: evt.target.value }
+            data
         })
     };
 
     onCheckIntolerances = (evt, index) => {
+        let list = [];
         let intolerances = [...this.state.intolerances]
         intolerances[index].checked = evt.target.checked;
 
+        for (let i = 0; i < intolerances.length; i++) {
+            if (intolerances[i].checked === true) {
+                list.push(intolerances[i].name)
+            }
+        };
+
         let data = { ...this.state.data };
-        data.intolerances = intolerances;
+        data.intolerances = list.toString().replace(",", "%2C+");
 
         this.setState({
             data
-        })
-
-        // this.setState({
-        //     intolerances
-        // })
-
-        // console.log(this.state.intolerances)
-    }
+        });
+    };
 
     handleInclude = (evt, index) => {
-        evt.preventDefault();
-        let includeIngredients = [...this.state.include]
-        includeIngredients[index] = evt.target.value;
-        this.setState({
-            include: includeIngredients
-        })
+        // evt.preventDefault();
+        // let includeIngredients = [...this.state.include]
+        // includeIngredients[index] = evt.target.value;
+        // this.setState({
+        //     include: includeIngredients
+        // })
     };
 
     handleExclude = (evt, index) => {
         evt.preventDefault();
         let excludeIngredients = [...this.state.exclude]
-        excludeIngredients[index] = evt.target.value;
+        excludeIngredients[index] = evt.target.value
+
         this.setState({
             exclude: excludeIngredients
         })
@@ -111,7 +115,7 @@ class Main extends Component {
         this.setState({
             exclude
         })
-    }
+    };
 
     deleteIncludeField = (evt, index) => {
         evt.preventDefault();
@@ -136,41 +140,24 @@ class Main extends Component {
 
     onSelect = (e, id) => {
         console.log(id)
-        
+
         this.setState({
             modalShow: true
         })
-    }
+    };
 
     modalClose = () => {
         this.setState({
             modalShow: false
         })
-    }
-
+    };
+ 
     onSubmit = evt => {
         evt.preventDefault();
-
         console.log(this.state.data)
+        console.log(this.state.exclude)
 
-
-        // const data = {
-        //     recipeName: this.state.recipeName
-        // }
-
-        // let intolerances = [];
-        // for (let i = 0; i < this.state.intolerances.length; i++) {
-        //     if (this.state.intolerances[i].checked === true) {
-        //         intolerances.push(this.state.intolerances[i].name)
-        //     }
-        // }
-        // let str_2 = intolerances.toString().replace(",", "%2C+");
-
-        // let str = this.state.list.dietSelect
-        // console.log(str)
-
-        // console.log(this.state.data)
-        // recipeSearch.getRecipeByName(data, str, str_2)
+        // recipeSearch.getRecipeByName(this.state.data)
         //     .then((response) => {
         //         console.log(response.results);
         //         this.setState({
@@ -178,13 +165,13 @@ class Main extends Component {
         //         })
         //         return response;
         //     })
-        // .then((response) => {
-        //     for (let i = 0; i < response.results.length; i++) {
-        //         console.log(response.results[i].id)
-        //         recipeSearch.getRecipeDetailsById(response.results[i].id)
-        //     }
-        // })
-        // .catch(console.log)
+        //     // .then((response) => {
+        //     //     for (let i = 0; i < response.results.length; i++) {
+        //     //         console.log(response.results[i].id)
+        //     //         recipeSearch.getRecipeDetailsById(response.results[i].id)
+        //     //     }
+        //     // })
+        //     .catch(console.log)
     };
 
     render() {
@@ -193,7 +180,7 @@ class Main extends Component {
                 <div className="form-group row" key={index}>
                     <div className="col-sm-4"></div>
                     <div className="col-sm-8" style={{ display: "flex" }}>
-                        <input type="text" className="form-control" value={item} placeholder="" onChange={e => this.handleInclude(e, index)} />
+                        <input type="text" className="form-control" value={item} placeholder="" onChange={this.handleInclude} />
                         <span onClick={e => this.deleteIncludeField(e, index)}><i className="fas fa-times delete-btn"></i></span>
                     </div>
                 </div>
@@ -205,7 +192,7 @@ class Main extends Component {
                 <div className="form-group row" key={index}>
                     <div className="col-sm-4"></div>
                     <div className="col-sm-8" style={{ display: "flex" }}>
-                        <input type="text" className="form-control" value={item} placeholder="" onChange={e => this.handleExclude(e, index)} />
+                        <input type="text" className="form-control" placeholder="" onChange={e => this.handleExclude(e, index)} />
                         <span onClick={e => this.deleteExcludeField(e, index)}><i className="fas fa-times delete-btn"></i></span>
                     </div>
                 </div>
@@ -213,7 +200,6 @@ class Main extends Component {
         });
 
         let diet = this.state.diet.map((item, index) => {
-            console.log(item.category)
             return (
                 <option data-category={item.category} key={index}>{item.name}</option>
             )
@@ -222,7 +208,7 @@ class Main extends Component {
         let intolerances = this.state.intolerances.map((item, index) => {
             return (
                 <div className="form-check form-check-inline" key={index}>
-                    <input type="checkbox" className="form-check-input" checked={this.state.intolerances[index].checked} onChange={e => this.onCheckIntolerances(e, index)} />
+                    <input type="checkbox" className="form-check-input" name={item.name} checked={this.state.intolerances[index].checked} onChange={e => this.onCheckIntolerances(e, index)} />
                     <label className="form-check-label" htmlFor={item.name}>{item.name}</label>
                 </div>
             )
@@ -298,7 +284,7 @@ class Main extends Component {
                         <div className="form-group row">
                             <label htmlFor="ingredient-include" className="col-sm-4 col-form-label">Include Ingredients:</label>
                             <div className="col-sm-8 includeIngredient space" style={{ display: "flex" }}>
-                                <input type="text" className="form-control" id="ingredient-include" placeholder="Optional" />
+                                <input type="text" className="form-control" id="ingredient-include" onChange={this.handleInclude} placeholder="Optional" />
                                 <button type="button" className="btn form-btn" onClick={this.addIncludeField}><i className='fas fa-plus'></i></button>
                             </div>
                         </div>
@@ -309,7 +295,7 @@ class Main extends Component {
                         <div className="form-group row">
                             <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:</label>
                             <div className="col-sm-8 space" style={{ display: "flex" }}>
-                                <input type="text" className="form-control" id="ingredient-exclude" placeholder="Optional" />
+                                <input type="text" className="form-control" id="ingredient-exclude" onChange={this.handleExclude} placeholder="Optional" />
                                 <button type="button" className="btn form-btn" onClick={this.addExcludeField}><i className='fas fa-plus'></i></button>
                             </div>
                         </div>
@@ -328,7 +314,7 @@ class Main extends Component {
                         {list}
 
                         <div className="col-sm-4 recipe-item" onClick={e => this.onSelect(e, 'test')}>
-                            <img className="recipe-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/Pasta-2802156_1920.jpg"/>
+                            <img className="recipe-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/Pasta-2802156_1920.jpg" />
                             <h3 className="recipe-title">Test Recipe Title</h3>
                             <div>
                                 <div>Cook Time: 10 minutes</div>

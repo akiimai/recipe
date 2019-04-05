@@ -12,14 +12,31 @@ $font-stack: Times;
   padding:0;
 }
 
-.recipeItem {
+.recipe-ctn {
     display: flex; 
     justify-content: center;
     padding: 20px; 
 }
 
-.recipeImg {
-    height: 250px
+.recipe-item {
+    cursor: pointer; 
+    padding: 20px;
+    background-color: #F8F8F8;
+    border-radius: 5%;
+
+    &:hover {
+        background-color: #EFEFEF;
+    }
+}
+
+.recipe-img {
+    width: 100%;
+    height: auto;
+    border-radius: 5%;
+}
+
+.recipe-title {
+    padding: 20px 0 0 0;
 }
 
 .delete-btn {

@@ -2,42 +2,81 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Main.css';
 import * as recipeSearch from './services/recipeSearch';
-import { diet, intolerances } from './data';
-
+import { diet, intolerances, cuisines, type } from './data';
+import RecipeModal from './RecipeModal';
 class Main extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            recipeName: '',
             diet: diet,
             intolerances: intolerances,
-            data: [],
+            cuisines: cuisines,
+            type: type,
+
+            list: [],
             include: [],
-            exclude: [], 
-            dietSelect: ''
+            exclude: [],
+
+            data: {
+                recipeName: '',
+                dietSelect: '',
+                cuisineSelect: '',
+                typeSelect: '',
+                excludeIngredients: '',
+                intolerances: ''
+            },
+            modalShow: false
         }
     }
 
-    onChange = evt => {
-        evt.preventDefault();
+    onRecipeName = (evt) => {
         this.setState({
-            recipeName: evt.target.value
+            data: { recipeName: evt.target.value }
         })
     };
 
     dietSelect = (evt) => {
+        console.log(evt.target.getAttribute('value'))
+
+        console.log(this.state.diet)
+        let data = { ...this.state.data };
+        data.dietSelect = evt.target.value;
         this.setState({
-            dietSelect: evt.target.value 
+            data
+        })
+    };
+
+    cuisineSelect = (evt) => {
+        let data = { ...this.state.data };
+        data.cuisineSelect = evt.target.value;
+        this.setState({
+            data
+        })
+    };
+
+    typeSelect = (evt) => {
+        this.setState({
+            data: { recipeName: evt.target.value }
         })
     };
 
     onCheckIntolerances = (evt, index) => {
         let intolerances = [...this.state.intolerances]
         intolerances[index].checked = evt.target.checked;
+
+        let data = { ...this.state.data };
+        data.intolerances = intolerances;
+
         this.setState({
-            intolerances
+            data
         })
+
+        // this.setState({
+        //     intolerances
+        // })
+
+        // console.log(this.state.intolerances)
     }
 
     handleInclude = (evt, index) => {
@@ -95,33 +134,50 @@ class Main extends Component {
         })
     };
 
+    onSelect = (e, id) => {
+        console.log(id)
+        
+        this.setState({
+            modalShow: true
+        })
+    }
 
+    modalClose = () => {
+        this.setState({
+            modalShow: false
+        })
+    }
 
     onSubmit = evt => {
         evt.preventDefault();
-        const data = {
-            recipeName: this.state.recipeName
-        }
 
-        let intolerances = [];
-        for (let i = 0; i < this.state.intolerances.length; i++) {
-            if (this.state.intolerances[i].checked === true) {
-                intolerances.push(this.state.intolerances[i].name)
-            }
-        }
-        let str_2 = intolerances.toString().replace(",", "%2C+");
+        console.log(this.state.data)
 
-        let str = this.state.dietSelect
-        console.log(str)
 
-        recipeSearch.getRecipeByName(data, str, str_2)
-            .then((response) => {
-                console.log(response.results);
-                this.setState({
-                    data: response.results
-                })
-                // return response;
-            })
+        // const data = {
+        //     recipeName: this.state.recipeName
+        // }
+
+        // let intolerances = [];
+        // for (let i = 0; i < this.state.intolerances.length; i++) {
+        //     if (this.state.intolerances[i].checked === true) {
+        //         intolerances.push(this.state.intolerances[i].name)
+        //     }
+        // }
+        // let str_2 = intolerances.toString().replace(",", "%2C+");
+
+        // let str = this.state.list.dietSelect
+        // console.log(str)
+
+        // console.log(this.state.data)
+        // recipeSearch.getRecipeByName(data, str, str_2)
+        //     .then((response) => {
+        //         console.log(response.results);
+        //         this.setState({
+        //             data: response.results
+        //         })
+        //         return response;
+        //     })
         // .then((response) => {
         //     for (let i = 0; i < response.results.length; i++) {
         //         console.log(response.results[i].id)
@@ -154,11 +210,12 @@ class Main extends Component {
                     </div>
                 </div>
             )
-        })
+        });
 
         let diet = this.state.diet.map((item, index) => {
+            console.log(item.category)
             return (
-                <option key={index}>{item.name}</option>
+                <option data-category={item.category} key={index}>{item.name}</option>
             )
         });
 
@@ -169,14 +226,26 @@ class Main extends Component {
                     <label className="form-check-label" htmlFor={item.name}>{item.name}</label>
                 </div>
             )
-        })
+        });
 
-        let list = this.state.data
-            ? this.state.data.map(item => {
+        let cuisines = this.state.cuisines.map((item, index) => {
+            return (
+                <option key={index}>{item.name}</option>
+            )
+        });
+
+        let type = this.state.type.map((item, index) => {
+            return (
+                <option key={index}>{item.name}</option>
+            )
+        });
+
+        let list = this.state.list
+            ? this.state.list.map(item => {
                 return (
-                    <div className="col-sm-4" key={item.id}>
-                        <img className="recipeImg" src={"http://webknox.com/recipeImages/" + item.image} alt={item.recipeName} />
-                        <h2>{item.title}</h2>
+                    <div className="col-sm-4 recipe-item" key={item.id} onClick={this.onSelect(item.id)}>
+                        <img className="recipe-img" src={"http://webknox.com/recipeImages/" + item.image} alt={item.recipeName} />
+                        <h3 className="recipe-title">{item.title}</h3>
                         <div>
                             <div>Cook Time: {item.readyInMinutes} minutes</div>
                             <div>Servings: {item.servings}</div>
@@ -195,7 +264,7 @@ class Main extends Component {
                         <div className="form-group row">
                             <label htmlFor="recipeName" className="col-sm-4 col-form-label">Find a Recipe:</label>
                             <div className="col-sm-8 space">
-                                <input type="text" className="form-control" id="recipeName" placeholder="Find a recipe" defaultValue={this.state.recipeName} onChange={this.onChange} />
+                                <input type="text" className="form-control" id="recipeName" placeholder="Find a recipe" defaultValue={this.state.recipeName} onChange={this.onRecipeName} />
                             </div>
                         </div>
                         <div className="form-group row">
@@ -207,9 +276,23 @@ class Main extends Component {
                         </div>
                         <div className="form-group row">
                             <label htmlFor="restrictions" className="col-sm-4 col-form-label">Intolerances:</label>
-                            <div className="col-sm-8" style={{ fontSize: "15px" }}>
+                            <div className="col-sm-8" style={{ fontSize: "15px", paddingTop: "8px" }}>
                                 {intolerances}
                             </div>
+                        </div>
+                        <div className="form-group row">
+                            <label htmlFor="restrictions" className="col-sm-4 col-form-label">Cuisine:</label>
+                            <select className="col-sm-8 form-control" onChange={this.cuisineSelect}>
+                                <option>Choose...</option>
+                                {cuisines}
+                            </select>
+                        </div>
+                        <div className="form-group row">
+                            <label htmlFor="restrictions" className="col-sm-4 col-form-label">Type:</label>
+                            <select className="col-sm-8 form-control" onChange={this.typeSelect}>
+                                <option>Choose...</option>
+                                {type}
+                            </select>
                         </div>
                         {/* Include Block */}
                         <div className="form-group row">
@@ -241,10 +324,22 @@ class Main extends Component {
                 </div>
 
                 <div className="container">
-                    <div className="row recipeItem col-sm-12">
+                    <div className="row recipe-ctn col-sm-12">
                         {list}
+
+                        <div className="col-sm-4 recipe-item" onClick={e => this.onSelect(e, 'test')}>
+                            <img className="recipe-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/Pasta-2802156_1920.jpg"/>
+                            <h3 className="recipe-title">Test Recipe Title</h3>
+                            <div>
+                                <div>Cook Time: 10 minutes</div>
+                                <div>Servings: 12</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <RecipeModal show={this.state.modalShow} onHide={this.modalClose} />
+
             </React.Fragment>
         )
     }

@@ -17,6 +17,7 @@ class Main extends Component {
             list: [],
             include: [],
             exclude: [],
+            excludeFirst: "",
 
             data: {
                 recipeName: '',
@@ -27,37 +28,42 @@ class Main extends Component {
                 includeIngredients: '',
                 excludeIngredients: ''
             },
-            modalShow: false
+            modalShow: false,
+            modalData: []
         }
     }
 
     onRecipeName = (evt) => {
+        let name = evt.target.value.toLowerCase().replace(" ", "+");
         let data = { ...this.state.data };
-        data.recipeName = evt.target.value;
+        data.recipeName = name;
         this.setState({
             data
         })
     };
 
     dietSelect = (evt) => {
+        let diet = evt.target.value.toLowerCase().replace(" ", "+");
         let data = { ...this.state.data };
-        data.dietSelect = evt.target.value;
+        data.dietSelect = diet;
         this.setState({
             data
         })
     };
 
     cuisineSelect = (evt) => {
+        let cuisine = evt.target.value.toLowerCase().replace(" ", "+");
         let data = { ...this.state.data };
-        data.cuisineSelect = evt.target.value;
+        data.cuisineSelect = cuisine;
         this.setState({
             data
         })
     };
 
     typeSelect = (evt) => {
+        let type = evt.target.value.toLowerCase().replace(" ", "+");
         let data = { ...this.state.data };
-        data.typeSelect = evt.target.value;
+        data.typeSelect = type;
         this.setState({
             data
         })
@@ -75,75 +81,87 @@ class Main extends Component {
         };
 
         let data = { ...this.state.data };
-        data.intolerances = list.toString().replace(",", "%2C+");
+        data.intolerances = list.toString().replace(",", "%2C+").toLowerCase();
 
         this.setState({
             data
         });
     };
 
-    handleInclude = (evt, index) => {
-        // evt.preventDefault();
-        // let includeIngredients = [...this.state.include]
-        // includeIngredients[index] = evt.target.value;
-        // this.setState({
-        //     include: includeIngredients
-        // })
-    };
+    // handleInclude = (evt, index) => {
+    //     // evt.preventDefault();
+    //     // let includeIngredients = [...this.state.include]
+    //     // includeIngredients[index] = evt.target.value;
+    //     // this.setState({
+    //     //     include: includeIngredients
+    //     // })
+    // };
 
-    handleExclude = (evt, index) => {
-        evt.preventDefault();
-        let excludeIngredients = [...this.state.exclude]
-        excludeIngredients[index] = evt.target.value
+    // handleExclude = (evt, index) => {
+    //     evt.preventDefault();
+    //     // if (!index && evt.target.value !== "") {
+    //     //     this.setState({
+    //     //         excludeFirst: evt.target.value
+    //     //     })
+    //     // } else {
+    //     //     let excludeIngredients = [...this.state.exclude]
+    //     //     excludeIngredients[index] = evt.target.value
 
-        this.setState({
-            exclude: excludeIngredients
-        })
-    };
+    //     //     this.setState({
+    //     //         exclude: excludeIngredients
+    //     //     })
+    //     // }
+    // };
 
-    addIncludeField = evt => {
-        evt.preventDefault();
-        let include = this.state.include.concat([""]);
-        this.setState({
-            include
-        })
-    };
+    // addIncludeField = evt => {
+    //     evt.preventDefault();
+    //     let include = this.state.include.concat([""]);
+    //     this.setState({
+    //         include
+    //     })
+    // };
 
-    addExcludeField = evt => {
-        evt.preventDefault();
-        let exclude = this.state.exclude.concat([""]);
-        this.setState({
-            exclude
-        })
-    };
+    // addExcludeField = evt => {
+    //     evt.preventDefault();
+    //     let exclude = this.state.exclude.concat([""]);
+    //     this.setState({
+    //         exclude
+    //     })
+    // };
 
-    deleteIncludeField = (evt, index) => {
-        evt.preventDefault();
-        this.state.include.splice(index, 1);
-        // let include = [
-        //     ...this.state.include.slice(0, index), 
-        //     ...this.state.include.slice(index + 1)
-        // ] 
-        this.setState({
-            include: this.state.include
-            // include
-        })
-    };
+    // deleteIncludeField = (evt, index) => {
+    //     evt.preventDefault();
+    //     this.state.include.splice(index, 1);
+    //     // let include = [
+    //     //     ...this.state.include.slice(0, index), 
+    //     //     ...this.state.include.slice(index + 1)
+    //     // ] 
+    //     this.setState({
+    //         include: this.state.include
+    //         // include
+    //     })
+    // };
 
-    deleteExcludeField = (evt, index) => {
-        evt.preventDefault();
-        this.state.exclude.splice(index, 1);
-        this.setState({
-            exclude: this.state.exclude
-        })
-    };
+    // deleteExcludeField = (evt, index) => {
+    //     evt.preventDefault();
+    //     this.state.exclude.splice(index, 1);
+    //     this.setState({
+    //         exclude: this.state.exclude
+    //     })
+    // };
 
-    onSelect = (e, id) => {
+    onSelect = (evt, id) => {
         console.log(id)
 
-        this.setState({
-            modalShow: true
-        })
+        recipeSearch.getRecipeDetailsById(id)
+            .then((response) => {
+                console.log(response)
+
+                this.setState({
+                    modalShow: true,
+                    modalData: response.results
+                })
+            })
     };
 
     modalClose = () => {
@@ -151,53 +169,46 @@ class Main extends Component {
             modalShow: false
         })
     };
- 
+
     onSubmit = evt => {
         evt.preventDefault();
         console.log(this.state.data)
-        console.log(this.state.exclude)
 
-        // recipeSearch.getRecipeByName(this.state.data)
-        //     .then((response) => {
-        //         console.log(response.results);
-        //         this.setState({
-        //             data: response.results
-        //         })
-        //         return response;
-        //     })
-        //     // .then((response) => {
-        //     //     for (let i = 0; i < response.results.length; i++) {
-        //     //         console.log(response.results[i].id)
-        //     //         recipeSearch.getRecipeDetailsById(response.results[i].id)
-        //     //     }
-        //     // })
-        //     .catch(console.log)
+        recipeSearch.getRecipeByName(this.state.data)
+            .then((response) => {
+                console.log(response.results);
+                this.setState({
+                    list: response.results
+                })
+                return response;
+            })
+            .catch(console.log)
     };
 
     render() {
-        let addIncludeField = this.state.include.map((item, index) => {
-            return (
-                <div className="form-group row" key={index}>
-                    <div className="col-sm-4"></div>
-                    <div className="col-sm-8" style={{ display: "flex" }}>
-                        <input type="text" className="form-control" value={item} placeholder="" onChange={this.handleInclude} />
-                        <span onClick={e => this.deleteIncludeField(e, index)}><i className="fas fa-times delete-btn"></i></span>
-                    </div>
-                </div>
-            )
-        });
+        // let addIncludeField = this.state.include.map((item, index) => {
+        //     return (
+        //         <div className="form-group row" key={index}>
+        //             <div className="col-sm-4"></div>
+        //             <div className="col-sm-8" style={{ display: "flex" }}>
+        //                 <input type="text" className="form-control" value={item} placeholder="" onChange={this.handleInclude} />
+        //                 <span onClick={e => this.deleteIncludeField(e, index)}><i className="fas fa-times delete-btn"></i></span>
+        //             </div>
+        //         </div>
+        //     )
+        // });
 
-        let addExcludeField = this.state.exclude.map((item, index) => {
-            return (
-                <div className="form-group row" key={index}>
-                    <div className="col-sm-4"></div>
-                    <div className="col-sm-8" style={{ display: "flex" }}>
-                        <input type="text" className="form-control" placeholder="" onChange={e => this.handleExclude(e, index)} />
-                        <span onClick={e => this.deleteExcludeField(e, index)}><i className="fas fa-times delete-btn"></i></span>
-                    </div>
-                </div>
-            )
-        });
+        // let addExcludeField = this.state.exclude.map((item, index) => {
+        //     return (
+        //         <div className="form-group row" key={index}>
+        //             <div className="col-sm-4"></div>
+        //             <div className="col-sm-8" style={{ display: "flex" }}>
+        //                 <input type="text" className="form-control" placeholder="" onChange={e => this.handleExclude(e, index)} />
+        //                 <span onClick={e => this.deleteExcludeField(e, index)}><i className="fas fa-times delete-btn"></i></span>
+        //             </div>
+        //         </div>
+        //     )
+        // });
 
         let diet = this.state.diet.map((item, index) => {
             return (
@@ -229,7 +240,7 @@ class Main extends Component {
         let list = this.state.list
             ? this.state.list.map(item => {
                 return (
-                    <div className="col-sm-4 recipe-item" key={item.id} onClick={this.onSelect(item.id)}>
+                    <div className="col-sm-4 recipe-item" value={item.id} key={item.id} onClick={(e) => this.onSelect(e, item.id)}>
                         <img className="recipe-img" src={"http://webknox.com/recipeImages/" + item.image} alt={item.recipeName} />
                         <h3 className="recipe-title">{item.title}</h3>
                         <div>
@@ -281,25 +292,25 @@ class Main extends Component {
                             </select>
                         </div>
                         {/* Include Block */}
-                        <div className="form-group row">
+                        {/* <div className="form-group row">
                             <label htmlFor="ingredient-include" className="col-sm-4 col-form-label">Include Ingredients:</label>
                             <div className="col-sm-8 includeIngredient space" style={{ display: "flex" }}>
                                 <input type="text" className="form-control" id="ingredient-include" onChange={this.handleInclude} placeholder="Optional" />
                                 <button type="button" className="btn form-btn" onClick={this.addIncludeField}><i className='fas fa-plus'></i></button>
                             </div>
                         </div>
-                        {addIncludeField}
+                        {addIncludeField} */}
                         {/* Include Block End */}
 
                         {/* Exclude Block */}
-                        <div className="form-group row">
+                        {/* <div className="form-group row">
                             <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:</label>
                             <div className="col-sm-8 space" style={{ display: "flex" }}>
                                 <input type="text" className="form-control" id="ingredient-exclude" onChange={this.handleExclude} placeholder="Optional" />
                                 <button type="button" className="btn form-btn" onClick={this.addExcludeField}><i className='fas fa-plus'></i></button>
                             </div>
                         </div>
-                        {addExcludeField}
+                        {addExcludeField} */}
                         {/* Exclude Block End */}
                         <div className="form-group row" style={{ display: "flex", justifyContent: "center" }}>
                             <div>
@@ -324,7 +335,7 @@ class Main extends Component {
                     </div>
                 </div>
 
-                <RecipeModal show={this.state.modalShow} onHide={this.modalClose} />
+                <RecipeModal modaldata={this.state.modalData} show={this.state.modalShow} onHide={this.modalClose} />
 
             </React.Fragment>
         )

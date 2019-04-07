@@ -2,19 +2,6 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 class RecipeModal extends Component {
-    constructor(props) {
-        super(props) 
-
-        this.state = {
-            modalData: this.props.modaldata
-        }
-    }
-
-    componentDidMount() {
-        console.log(this.props.modaldata)
-        console.log(this.state.modalData)
-    }
-
     render() {
         return (
             <React.Fragment>
@@ -26,13 +13,15 @@ class RecipeModal extends Component {
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            {this.state.modalData.title}
+                            {this.props.modaldata.title}
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <h4>Title</h4>
-                        <p>
-                        </p>
+                        <img src={this.props.modaldata.image} alt={this.props.modaldata.title} />
+                        <div>
+                            <h4>Instructions:</h4>
+                            <p>{this.props.modaldata.instructions}</p>
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.props.onHide}>Close</Button>

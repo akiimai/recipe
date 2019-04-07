@@ -158,10 +158,15 @@ class Main extends Component {
                 console.log(response)
 
                 this.setState({
-                    modalShow: true,
-                    modalData: response.results
+                    modalData: response
                 })
             })
+            .then(() => {
+                this.setState({
+                    modalShow: true 
+                })
+            })
+            .catch(console.log)
     };
 
     modalClose = () => {

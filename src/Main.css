@@ -49,10 +49,6 @@
   margin-left: 5px;
 }
 
-.modal-title {
-  text-align: center;
-}
-
 .modal-body {
   text-align: center;
 }
@@ -63,6 +59,20 @@
 
 .modal-image {
   width: 50%;
+}
+
+.add-info {
+  margin-top: 10px;
+}
+
+.ingredient-list {
+  display: flex;
+  justify-content: center;
+}
+
+.table {
+  width: 80%;
+  margin: 20px 0;
 }
 
 /*# sourceMappingURL=Main.css.map */

@@ -2,15 +2,36 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 class RecipeModal extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            modalData: this.props
-        }
-    }
-
     render() {
+        let ingredients;
+        let instructions;
+        if (this.props.show === true) {
+            ingredients = this.props.modaldata.extendedIngredients.map((item, index) => {
+                return (
+                    <tr key={index}>
+                        <td>{item.name}</td>
+                        <td>{item.measures.metric.amount} {item.measures.metric.unitShort}</td>
+                    </tr>
+                )
+            });
+
+            instructions = this.props.modaldata.analyzedInstructions.map((item, index) => {
+                let subitem = item.steps;
+                return (
+                    <div key={index}>
+                        {item.name ? (<div><strong>{item.name}: </strong></div>) : ""}
+                        <ul>
+                            {subitem.map((subitem, index) => {
+                                return (
+                                    <li key={index}>{subitem.step}</li>
+                                )
+                            })}
+                        </ul>
+                    </div>
+                )
+            })
+        };
+
         return (
             <React.Fragment>
                 <Modal
@@ -26,18 +47,27 @@ class RecipeModal extends Component {
                     </Modal.Header>
                     <Modal.Body className="modal-body">
                         <img className="modal-image" src={this.props.modaldata.image} alt={this.props.modaldata.title} />
+                        <div className="add-info">
+                            <div><strong>Cook Time: </strong>{this.props.modaldata.readyInMinutes} minutes</div>
+                            <div><strong>Servings: </strong>{this.props.modaldata.servings}</div>
+                        </div>
                         <div className="modal-text">
-                            <div>
-                                Cook Time: {this.props.modaldata.readyInMinutes}
-                                Servings: {this.props.modaldata.servings}
-                            </div>
-                            <div>
-                                <h5>Ingredients:</h5>
-                                {/* <p>{this.props.modaldata.extendedIngredients}</p> */}
+                            <div className="ingredient-list">
+                                <table className="table table-sm">
+                                    <thead className="thead-light">
+                                        <tr>
+                                            <th scope="col">Ingredient</th>
+                                            <th scope="col">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {ingredients}
+                                    </tbody>
+                                </table>
                             </div>
                             <div>
                                 <h5>Instructions:</h5>
-                                <p>{this.props.modaldata.instructions}</p>
+                                <div>{instructions}</div>
                             </div>
                         </div>
                     </Modal.Body>

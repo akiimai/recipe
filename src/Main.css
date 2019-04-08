@@ -49,4 +49,20 @@
   margin-left: 5px;
 }
 
+.modal-title {
+  text-align: center;
+}
+
+.modal-body {
+  text-align: center;
+}
+
+.modal-text {
+  text-align: left;
+}
+
+.modal-image {
+  width: 50%;
+}
+
 /*# sourceMappingURL=Main.css.map */

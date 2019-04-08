@@ -97,21 +97,16 @@ class Main extends Component {
     //     // })
     // };
 
-    // handleExclude = (evt, index) => {
-    //     evt.preventDefault();
-    //     // if (!index && evt.target.value !== "") {
-    //     //     this.setState({
-    //     //         excludeFirst: evt.target.value
-    //     //     })
-    //     // } else {
-    //     //     let excludeIngredients = [...this.state.exclude]
-    //     //     excludeIngredients[index] = evt.target.value
+    handleExclude = (evt, index) => {
+        evt.preventDefault();
+        let data = {...this.state.data}; 
+        let exclude = evt.target.value.toLowerCase().replace(/\s+/g, '').replace(/,/g, '%2C+'); 
+        data.excludeIngredients = exclude;
 
-    //     //     this.setState({
-    //     //         exclude: excludeIngredients
-    //     //     })
-    //     // }
-    // };
+        this.setState({
+            data
+        })
+    };
 
     // addIncludeField = evt => {
     //     evt.preventDefault();
@@ -179,15 +174,17 @@ class Main extends Component {
         evt.preventDefault();
         console.log(this.state.data)
 
-        recipeSearch.getRecipeByName(this.state.data)
-            .then((response) => {
-                console.log(response.results);
-                this.setState({
-                    list: response.results
-                })
-                return response;
-            })
-            .catch(console.log)
+
+
+        // recipeSearch.getRecipeByName(this.state.data)
+        //     .then((response) => {
+        //         console.log(response.results);
+        //         this.setState({
+        //             list: response.results
+        //         })
+        //         return response;
+        //     })
+        //     .catch(console.log)
     };
 
     render() {
@@ -308,6 +305,16 @@ class Main extends Component {
                         {/* Include Block End */}
 
                         {/* Exclude Block */}
+                        <div className="form-group row">
+                            <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:  
+                            <div><small>(separate ingredients with a comma)</small></div>
+                            </label>
+                            {/* <h6>Separate ingredients with comma</h6> */}
+                            <div className="col-sm-8 space" style={{ display: "flex" }}>
+                                <textarea type="text" className="form-control" id="ingredient-exclude" onChange={this.handleExclude} placeholder="Optional" />
+                            </div>
+                        </div>
+
                         {/* <div className="form-group row">
                             <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:</label>
                             <div className="col-sm-8 space" style={{ display: "flex" }}>
@@ -329,8 +336,8 @@ class Main extends Component {
                     <div className="row recipe-ctn col-sm-12">
                         {list}
 
-                        <div className="col-sm-4 recipe-item" onClick={e => this.onSelect(e, 'test')}>
-                            <img className="recipe-img" src="https://upload.wikimedia.org/wikipedia/commons/5/54/Pasta-2802156_1920.jpg" />
+                        <div className="col-sm-4 recipe-item" onClick={e => this.onSelect(e, 156992)}>
+                            <img className="recipe-img" alt="test-recipe" src="https://upload.wikimedia.org/wikipedia/commons/5/54/Pasta-2802156_1920.jpg" />
                             <h3 className="recipe-title">Test Recipe Title</h3>
                             <div>
                                 <div>Cook Time: 10 minutes</div>

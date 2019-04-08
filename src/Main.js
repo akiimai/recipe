@@ -13,19 +13,13 @@ class Main extends Component {
             intolerances: intolerances,
             cuisines: cuisines,
             type: type,
-
             list: [],
-            include: [],
-            exclude: [],
-            excludeFirst: "",
-
             data: {
                 recipeName: '',
                 dietSelect: '',
                 intolerances: '',
                 cuisineSelect: '',
                 typeSelect: '',
-                includeIngredients: '',
                 excludeIngredients: ''
             },
             modalShow: false,
@@ -88,15 +82,6 @@ class Main extends Component {
         });
     };
 
-    // handleInclude = (evt, index) => {
-    //     // evt.preventDefault();
-    //     // let includeIngredients = [...this.state.include]
-    //     // includeIngredients[index] = evt.target.value;
-    //     // this.setState({
-    //     //     include: includeIngredients
-    //     // })
-    // };
-
     handleExclude = (evt, index) => {
         evt.preventDefault();
         let data = {...this.state.data}; 
@@ -108,46 +93,7 @@ class Main extends Component {
         })
     };
 
-    // addIncludeField = evt => {
-    //     evt.preventDefault();
-    //     let include = this.state.include.concat([""]);
-    //     this.setState({
-    //         include
-    //     })
-    // };
-
-    // addExcludeField = evt => {
-    //     evt.preventDefault();
-    //     let exclude = this.state.exclude.concat([""]);
-    //     this.setState({
-    //         exclude
-    //     })
-    // };
-
-    // deleteIncludeField = (evt, index) => {
-    //     evt.preventDefault();
-    //     this.state.include.splice(index, 1);
-    //     // let include = [
-    //     //     ...this.state.include.slice(0, index), 
-    //     //     ...this.state.include.slice(index + 1)
-    //     // ] 
-    //     this.setState({
-    //         include: this.state.include
-    //         // include
-    //     })
-    // };
-
-    // deleteExcludeField = (evt, index) => {
-    //     evt.preventDefault();
-    //     this.state.exclude.splice(index, 1);
-    //     this.setState({
-    //         exclude: this.state.exclude
-    //     })
-    // };
-
     onSelect = (evt, id) => {
-        console.log(id)
-
         recipeSearch.getRecipeDetailsById(id)
             .then((response) => {
                 console.log(response)
@@ -186,30 +132,6 @@ class Main extends Component {
     };
 
     render() {
-        // let addIncludeField = this.state.include.map((item, index) => {
-        //     return (
-        //         <div className="form-group row" key={index}>
-        //             <div className="col-sm-4"></div>
-        //             <div className="col-sm-8" style={{ display: "flex" }}>
-        //                 <input type="text" className="form-control" value={item} placeholder="" onChange={this.handleInclude} />
-        //                 <span onClick={e => this.deleteIncludeField(e, index)}><i className="fas fa-times delete-btn"></i></span>
-        //             </div>
-        //         </div>
-        //     )
-        // });
-
-        // let addExcludeField = this.state.exclude.map((item, index) => {
-        //     return (
-        //         <div className="form-group row" key={index}>
-        //             <div className="col-sm-4"></div>
-        //             <div className="col-sm-8" style={{ display: "flex" }}>
-        //                 <input type="text" className="form-control" placeholder="" onChange={e => this.handleExclude(e, index)} />
-        //                 <span onClick={e => this.deleteExcludeField(e, index)}><i className="fas fa-times delete-btn"></i></span>
-        //             </div>
-        //         </div>
-        //     )
-        // });
-
         let diet = this.state.diet.map((item, index) => {
             return (
                 <option data-category={item.category} key={index}>{item.name}</option>
@@ -242,10 +164,10 @@ class Main extends Component {
                 return (
                     <div className="col-sm-4 recipe-item" value={item.id} key={item.id} onClick={(e) => this.onSelect(e, item.id)}>
                         <img className="recipe-img" src={"http://webknox.com/recipeImages/" + item.image} alt={item.recipeName} />
-                        <h3 className="recipe-title">{item.title}</h3>
+                        <h4 className="recipe-title">{item.title}</h4>
                         <div>
-                            <div>Cook Time: {item.readyInMinutes} minutes</div>
-                            <div>Servings: {item.servings}</div>
+                            <div><strong>Cook Time: </strong>{item.readyInMinutes} minutes</div>
+                            <div><strong>Servings: </strong>{item.servings}</div>
                         </div>
                     </div>
 
@@ -291,18 +213,6 @@ class Main extends Component {
                                 {type}
                             </select>
                         </div>
-                        {/* Include Block */}
-                        {/* <div className="form-group row">
-                            <label htmlFor="ingredient-include" className="col-sm-4 col-form-label">Include Ingredients:</label>
-                            <div className="col-sm-8 includeIngredient space" style={{ display: "flex" }}>
-                                <input type="text" className="form-control" id="ingredient-include" onChange={this.handleInclude} placeholder="Optional" />
-                                <button type="button" className="btn form-btn" onClick={this.addIncludeField}><i className='fas fa-plus'></i></button>
-                            </div>
-                        </div>
-                        {addIncludeField} */}
-                        {/* Include Block End */}
-
-                        {/* Exclude Block */}
                         <div className="form-group row">
                             <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:  
                             <div><small>(separate ingredients with a comma)</small></div>
@@ -311,16 +221,6 @@ class Main extends Component {
                                 <textarea type="text" className="form-control" id="ingredient-exclude" onChange={this.handleExclude} placeholder="Optional" />
                             </div>
                         </div>
-
-                        {/* <div className="form-group row">
-                            <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:</label>
-                            <div className="col-sm-8 space" style={{ display: "flex" }}>
-                                <input type="text" className="form-control" id="ingredient-exclude" onChange={this.handleExclude} placeholder="Optional" />
-                                <button type="button" className="btn form-btn" onClick={this.addExcludeField}><i className='fas fa-plus'></i></button>
-                            </div>
-                        </div>
-                        {addExcludeField} */}
-                        {/* Exclude Block End */}
                         <div className="form-group row" style={{ display: "flex", justifyContent: "center" }}>
                             <div>
                                 <button type="submit" className="btn btn-primary" onClick={this.onSubmit} style={{ width: "150px", marginTop: "40px" }}>Search</button>
@@ -332,15 +232,6 @@ class Main extends Component {
                 <div className="container">
                     <div className="row recipe-ctn col-sm-12">
                         {list}
-
-                        {/* <div className="col-sm-4 recipe-item" onClick={e => this.onSelect(e, 156992)}>
-                            <img className="recipe-img" alt="test-recipe" src="https://upload.wikimedia.org/wikipedia/commons/5/54/Pasta-2802156_1920.jpg" />
-                            <h3 className="recipe-title">Test Recipe Title</h3>
-                            <div>
-                                <div>Cook Time: 10 minutes</div>
-                                <div>Servings: 12</div>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
 

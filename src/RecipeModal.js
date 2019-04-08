@@ -56,7 +56,7 @@ class RecipeModal extends Component {
                                 <table className="table table-sm">
                                     <thead className="thead-light">
                                         <tr>
-                                            <th scope="col">Ingredient</th>
+                                            <th scope="col">Ingredients</th>
                                             <th scope="col">Amount</th>
                                         </tr>
                                     </thead>

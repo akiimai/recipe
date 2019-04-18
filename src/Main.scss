@@ -1,11 +1,33 @@
 $primary-color: #FFF; 
-$font-stack: Times; 
+$font-stack-header: 'Dosis', sans-serif;
+$font-stack-content: 'Open Sans', sans-serif;
+
+html {
+    height: 100%;
+    width: 100%;
+    background: url('images/cook-2364221_1920.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+body {
+    background: transparent;
+}
+
+h1 {
+    font-family: $font-stack-header;
+}
 
 .form-container {
     width: 650px;
+    margin: 5% auto;
     padding: 3% 3% 2% 2%;
-    margin-top: 5%;
-    background-color: #EFEFEF;
+    background: rgb(255, 255, 255, 0.7); 
+}
+
+.form-group {
+    padding: 8px 20px;
+    font-family: $font-stack-content;
 }
 
 .space {

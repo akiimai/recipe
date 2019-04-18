@@ -178,7 +178,7 @@ class Main extends Component {
         return (
             <React.Fragment>
                 <div className="container form-container">
-                    <h2 style={{ textAlign: "center", paddingBottom: "30px" }}>What should I cook?</h2>
+                    <h1 style={{ textAlign: "center", paddingBottom: "30px" }}>What should I cook?</h1>
                     <form>
                         <div className="form-group row">
                             <label htmlFor="recipeName" className="col-sm-4 col-form-label">Find a Recipe:</label>

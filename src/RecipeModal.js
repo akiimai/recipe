@@ -7,10 +7,11 @@ class RecipeModal extends Component {
         let instructions;
         if (this.props.show === true) {
             ingredients = this.props.modaldata.extendedIngredients.map((item, index) => {
+                let amount = Math.round(item.measures.metric.amount);
                 return (
                     <tr key={index}>
                         <td>{item.name}</td>
-                        <td>{item.measures.metric.amount} {item.measures.metric.unitShort}</td>
+                        <td>{amount} {item.measures.metric.unitShort}</td>
                     </tr>
                 )
             });

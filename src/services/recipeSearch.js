@@ -5,8 +5,8 @@ const headers = {
 }
 
 const getRecipeByName = (data) => {
-    const url = "https://webknox-recipes.p.rapidapi.com/recipes/search?type=" + data.typeSelect + "&diet=" + data.dietSelect + "&intolerances=" + data.intolerances + "&cuisine=" + data.cuisineSelect + "&excludeIngredients=" + data.excludeIngredients + "&query=" + data.recipeName
-    console.log(url)
+    const url = "https://webknox-recipes.p.rapidapi.com/recipes/search?type=" + data.typeSelect + "&offset=" + data.offset + "&number=" + data.itemCount +"&diet=" + data.dietSelect + "&intolerances=" + data.intolerances + "&cuisine=" + data.cuisineSelect + "&excludeIngredients=" + data.excludeIngredients + "&query=" + data.recipeName
+    console.log(data.offset, data.itemCount)
     
     const config = {
         method: "GET", 

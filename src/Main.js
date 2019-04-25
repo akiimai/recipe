@@ -20,10 +20,13 @@ class Main extends Component {
                 intolerances: '',
                 cuisineSelect: '',
                 typeSelect: '',
-                excludeIngredients: ''
+                excludeIngredients: '',
+                itemCount: 6,
+                offset: 0
             },
             modalShow: false,
-            modalData: []
+            modalData: [],
+            currentPage: 1,
         }
     }
 
@@ -84,8 +87,8 @@ class Main extends Component {
 
     handleExclude = (evt, index) => {
         evt.preventDefault();
-        let data = {...this.state.data}; 
-        let exclude = evt.target.value.toLowerCase().replace(/\s+/g, '').replace(/,/g, '%2C+'); 
+        let data = { ...this.state.data };
+        let exclude = evt.target.value.toLowerCase().replace(/\s+/g, '').replace(/,/g, '%2C+');
         data.excludeIngredients = exclude;
 
         this.setState({
@@ -104,7 +107,7 @@ class Main extends Component {
             })
             .then(() => {
                 this.setState({
-                    modalShow: true 
+                    modalShow: true
                 })
             })
             .catch(console.log)
@@ -130,6 +133,40 @@ class Main extends Component {
             })
             .catch(console.log)
     };
+
+    prevPage = (evt) => {
+        let currentPage = this.state.currentPage;
+        let data = { ...this.state.data };
+
+        currentPage = this.state.currentPage - 1;
+        data.offset = 6 / currentPage;
+
+        this.setState({
+            currentPage,
+            data
+        })
+
+        this.onSubmit(evt);
+    };
+
+    nextPage = (evt) => {
+        let currentPage = this.state.currentPage;
+        let data = { ...this.state.data };
+
+        currentPage = this.state.currentPage + 1;
+        data.offset = 6 * currentPage;
+
+        this.setState({
+            currentPage,
+            data
+        })
+
+        this.onSubmit(evt);
+    }
+
+    thisPage = () => {
+
+    }
 
     render() {
         let diet = this.state.diet.map((item, index) => {
@@ -178,7 +215,10 @@ class Main extends Component {
         return (
             <React.Fragment>
                 <div className="container form-container">
-                    <h1 style={{ textAlign: "center", paddingBottom: "30px" }}>What should I cook?</h1>
+                    <div className="form-description">
+                        <h1>What to cook?</h1>
+                        <p style={{ fontSize: "18px" }}>For the adventurous cook seeking new recipe ideas</p>
+                    </div>
                     <form>
                         <div className="form-group row">
                             <label htmlFor="recipeName" className="col-sm-4 col-form-label">Find a Recipe:</label>
@@ -214,25 +254,49 @@ class Main extends Component {
                             </select>
                         </div>
                         <div className="form-group row">
-                            <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:  
+                            <label htmlFor="ingredient-exclude" className="col-sm-4 col-form-label">Exclude Ingredients:
                             <div><small>(separate ingredients with a comma)</small></div>
                             </label>
                             <div className="col-sm-8 space" style={{ display: "flex" }}>
                                 <textarea type="text" className="form-control" id="ingredient-exclude" onChange={this.handleExclude} placeholder="Optional" />
                             </div>
                         </div>
-                        <div className="form-group row" style={{ display: "flex", justifyContent: "center" }}>
+                        <div className="form-group row submit-ctn">
                             <div>
-                                <button type="submit" className="btn btn-primary" onClick={this.onSubmit} style={{ width: "150px", marginTop: "40px" }}>Search</button>
+                                <button type="submit" className="btn btn-secondary" onClick={this.onSubmit}>Search</button>
                             </div>
                         </div>
                     </form>
+                </div>
+
+                <div>
+                    Image by <a href="https://pixabay.com/users/fxxu-199315/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2364221">fxxu</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2364221">Pixabay</a>
                 </div>
 
                 <div className="container">
                     <div className="row recipe-ctn col-sm-12">
                         {list}
                     </div>
+
+                    <nav className="nav-pag" aria-label="Page navigation example">
+                        <ul className="pagination">
+                            <li className="page-item" onClick={this.prevPage}>
+                                <div className="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span className="sr-only">Previous</span>
+                                </div>
+                            </li>
+                            <li className="page-item" onClick={this.thisPage}><div className="page-link">1</div></li>
+                            <li className="page-item" onClick={this.thisPage}><div className="page-link">2</div></li>
+                            <li className="page-item" onClick={this.thisPage}><div className="page-link">3</div></li>
+                            <li className="page-item" onClick={this.nextPage}>
+                                <div className="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span className="sr-only">Next</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
 
                 <RecipeModal modaldata={this.state.modalData} show={this.state.modalShow} onHide={this.modalClose} />

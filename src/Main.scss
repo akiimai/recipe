@@ -1,32 +1,57 @@
 $primary-color: #FFF; 
 $font-stack-header: 'Dosis', sans-serif;
 $font-stack-content: 'Open Sans', sans-serif;
+%justify-center {
+    display: flex; 
+    justify-content: center;
+}
 
-html {
+html, body {
     height: 100%;
     width: 100%;
+    font-family: $font-stack-header;
+    background: transparent;
+}
+
+#root {
+    width: 100%;
+    height: auto;
     background: url('images/cook-2364221_1920.jpg');
     background-size: cover;
     background-repeat: no-repeat;
 }
 
-body {
-    background: transparent;
+#container {
+    padding-top: 100px;
 }
 
+/* ---- FORM CONTAINER ---- */
 h1 {
     font-family: $font-stack-header;
 }
 
 .form-container {
     width: 650px;
-    margin: 5% auto;
     padding: 3% 3% 2% 2%;
     background: rgb(255, 255, 255, 0.7); 
+    border-radius: 5px;
+
+    @media only screen and (max-width: 800px){
+        width: 80%;
+    }
+}
+
+.form-description {
+    text-align: center;
+}
+
+.col-form-label {
+    font-family: $font-stack-header;
+    font-size: 18px;
 }
 
 .form-group {
-    padding: 8px 20px;
+    padding: 5px 20px;
     font-family: $font-stack-content;
 }
 
@@ -34,9 +59,26 @@ h1 {
   padding:0;
 }
 
-.recipe-ctn {
+.btn-secondary {
+    width: 150px;
+}
+
+.submit-ctn {
+    @extend %justify-center;
+}
+
+/* ---- SEARCH RESULTS ---- */
+.nav-pag {
     display: flex; 
     justify-content: center;
+}
+
+.page-item {
+    cursor: pointer;
+}
+
+.recipe-ctn {
+    @extend %justify-center;
     padding: 20px; 
 }
 
@@ -45,6 +87,7 @@ h1 {
     padding: 20px;
     background-color: #F8F8F8;
     border-radius: 5%;
+    margin: 5px;
 
     &:hover {
         background-color: #EFEFEF;
@@ -62,22 +105,7 @@ h1 {
     padding: 20px 0 0 0;
 }
 
-.delete-btn {
-    position: absolute; 
-    margin: 10px; 
-    right: 15px; 
-    color: #BABABA; 
-    cursor: pointer;
-}
-
-.form-btn {
-    border-radius: 50%; 
-    background-color: #FFF; 
-    margin-left: 5px; 
-}
-
-
-// MODAL 
+/* ---- MODAL CONTAINER ---- */
 .modal-body {
     text-align: center;
 }
@@ -95,8 +123,7 @@ h1 {
 }
 
 .ingredient-list {
-    display: flex; 
-    justify-content: center;
+    @extend %justify-center;
 }
 
 .table {

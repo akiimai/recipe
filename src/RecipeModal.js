@@ -66,14 +66,14 @@ class RecipeModal extends Component {
                                     </tbody>
                                 </table>
                             </div>
-                            <div>
+                            <div className="recipe-instructions">
                                 <h5>Instructions:</h5>
                                 <div>{instructions}</div>
                             </div>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.props.onHide}>Close</Button>
+                        <Button className="close-btn" onClick={this.props.onHide}>Close</Button>
                     </Modal.Footer>
                 </Modal>
             </React.Fragment>

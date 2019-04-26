@@ -15,10 +15,25 @@ html, body {
   width: 100%;
   height: auto;
   background: linear-gradient(rgba(138, 169, 208, 0.9), rgba(138, 169, 208, 0.9)), url("images/utensils.png");
+  background-size: 230px;
+  background-repeat: repeat;
 }
 
 #container {
   padding-top: 40px;
+}
+
+.image-credit {
+  margin: 20px;
+  color: #FFF;
+}
+
+.credit-link {
+  color: #FFF;
+}
+.credit-link:hover {
+  color: #323232;
+  text-decoration: none;
 }
 
 /* ------------------------ */
@@ -29,7 +44,7 @@ h1 {
 }
 
 .form-container {
-  width: 650px;
+  width: 600px;
   padding: 3% 3% 2% 2%;
   background: rgba(255, 255, 255, 0.85);
   border-radius: 5px;
@@ -58,12 +73,21 @@ h1 {
   padding: 0;
 }
 
-/* Submit */
+.form-check-label {
+  font-size: 16px;
+  font-family: "Dosis", sans-serif;
+}
+
+/* Submit Button */
 .btn-secondary {
   font-family: "Dosis", sans-serif;
   width: 120px;
-  background-color: rgba(138, 169, 208, 0.9);
+  background-color: #7d98bc;
   border: none;
+  margin-top: 8px;
+}
+.btn-secondary:hover {
+  background-color: #96b2d5;
 }
 
 /* ------------------------ */
@@ -100,6 +124,10 @@ h1 {
 }
 
 /* Pagination */
+.pagination {
+  border: solid 0.5px #FFF;
+}
+
 .nav-pag {
   display: flex;
   justify-content: center;
@@ -107,6 +135,19 @@ h1 {
 
 .page-item {
   cursor: pointer;
+}
+
+.page-link {
+  color: #96b2d5;
+}
+
+li.active .page-link {
+  background-color: #7d98bc !important;
+  border-color: #7d98bc !important;
+}
+
+.hide {
+  display: none;
 }
 
 /* ------------------------- */
@@ -133,6 +174,22 @@ h1 {
 /* Instructions */
 .modal-text {
   text-align: left;
+}
+
+.recipe-instructions {
+  padding: 10px 10px;
+}
+
+h5 {
+  padding-left: 25px;
+}
+
+.close-btn {
+  background-color: #7d98bc;
+  border: none;
+}
+.close-btn:hover {
+  background-color: #96b2d5;
 }
 
 /*# sourceMappingURL=Main.css.map */

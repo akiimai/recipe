@@ -132,7 +132,7 @@ class Main extends Component {
             })
             .catch(console.log)
 
-        // document.getElementById('nav').classList.remove('hide');
+        document.getElementById('nav').classList.remove('hide');
     };
 
     prevPage = (evt) => {
@@ -144,8 +144,7 @@ class Main extends Component {
 
             this.setState({
                 data
-            })
-            // }, () => this.onSubmit(evt))
+            }, () => this.onSubmit(evt))
         } else {
             currentPage -= 1;
             data.offset = data.offset - 6;
@@ -154,8 +153,7 @@ class Main extends Component {
             this.setState({
                 currentPage,
                 data
-            })
-            // }, () => this.onSubmit(evt))
+            }, () => this.onSubmit(evt))
         }
     };
 
@@ -170,8 +168,7 @@ class Main extends Component {
         this.setState({
             currentPage,
             data
-        })
-        // }, () => this.onSubmit(evt))
+        }, () => this.onSubmit(evt))
     }
 
     thisPage = (evt) => {
@@ -184,9 +181,7 @@ class Main extends Component {
         this.setState({
             currentPage,
             data
-        })
-        // }, () => this.onSubmit(evt))
-
+        }, () => this.onSubmit(evt))
     }
 
     pageActive = (current) => {
@@ -302,9 +297,9 @@ class Main extends Component {
                     </form>
                 </div>
 
-                {/* <div>
-                    Image by <a href="https://pixabay.com/users/27707-27707/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1123162">Kevin Phillips</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1123162">Pixabay</a>
-                </div> */}
+                <div className="image-credit">
+                    Image by <a className="credit-link" href="https://pixabay.com/users/OpenClipart-Vectors-30363/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1296432">OpenClipart-Vectors</a> from <a className="credit-link" href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1296432">Pixabay</a>
+                </div>
 
                 <div className="container" id="list">
                     <div className="row recipe-ctn col-sm-12">

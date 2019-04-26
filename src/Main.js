@@ -121,7 +121,6 @@ class Main extends Component {
 
     onSubmit = evt => {
         evt.preventDefault();
-        console.log(this.state.data)
 
         recipeSearch.getRecipeByName(this.state.data)
             .then((response) => {
@@ -132,40 +131,74 @@ class Main extends Component {
                 return response;
             })
             .catch(console.log)
+
+        // document.getElementById('nav').classList.remove('hide');
     };
 
     prevPage = (evt) => {
         let currentPage = this.state.currentPage;
         let data = { ...this.state.data };
 
-        currentPage = this.state.currentPage - 1;
-        data.offset = 6 / currentPage;
+        if (currentPage === 1) {
+            data.offset = 0
 
-        this.setState({
-            currentPage,
-            data
-        })
+            this.setState({
+                data
+            })
+            // }, () => this.onSubmit(evt))
+        } else {
+            currentPage -= 1;
+            data.offset = data.offset - 6;
+            this.pageActive(this.state.currentPage - 1);
 
-        this.onSubmit(evt);
+            this.setState({
+                currentPage,
+                data
+            })
+            // }, () => this.onSubmit(evt))
+        }
     };
 
     nextPage = (evt) => {
         let currentPage = this.state.currentPage;
         let data = { ...this.state.data };
+        currentPage += 1;
+        data.offset = 6 * this.state.currentPage;
 
-        currentPage = this.state.currentPage + 1;
-        data.offset = 6 * currentPage;
+        this.pageActive(this.state.currentPage + 1);
 
         this.setState({
             currentPage,
             data
         })
-
-        this.onSubmit(evt);
+        // }, () => this.onSubmit(evt))
     }
 
-    thisPage = () => {
+    thisPage = (evt) => {
+        let currentPage = evt.currentTarget.value;
+        let data = { ...this.state.data };
+        data.offset = (6 * currentPage) - 6;
 
+        this.pageActive(evt.currentTarget.value);
+
+        this.setState({
+            currentPage,
+            data
+        })
+        // }, () => this.onSubmit(evt))
+
+    }
+
+    pageActive = (current) => {
+        let pageLink = document.getElementsByClassName('page-item');
+
+        for (let i = 0; i < pageLink.length; i++) {
+            if (current === pageLink[i].value) {
+                pageLink[i].className += " active"
+            } else {
+                pageLink[i].classList.remove("active");
+            }
+        }
     }
 
     render() {
@@ -269,16 +302,16 @@ class Main extends Component {
                     </form>
                 </div>
 
-                <div>
-                    Image by <a href="https://pixabay.com/users/fxxu-199315/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2364221">fxxu</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=2364221">Pixabay</a>
-                </div>
+                {/* <div>
+                    Image by <a href="https://pixabay.com/users/27707-27707/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1123162">Kevin Phillips</a> from <a href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1123162">Pixabay</a>
+                </div> */}
 
-                <div className="container">
+                <div className="container" id="list">
                     <div className="row recipe-ctn col-sm-12">
                         {list}
                     </div>
 
-                    <nav className="nav-pag" aria-label="Page navigation example">
+                    <nav id="nav" className="nav-pag hide" aria-label="Page navigation example">
                         <ul className="pagination">
                             <li className="page-item" onClick={this.prevPage}>
                                 <div className="page-link" aria-label="Previous">
@@ -286,9 +319,9 @@ class Main extends Component {
                                     <span className="sr-only">Previous</span>
                                 </div>
                             </li>
-                            <li className="page-item" onClick={this.thisPage}><div className="page-link">1</div></li>
-                            <li className="page-item" onClick={this.thisPage}><div className="page-link">2</div></li>
-                            <li className="page-item" onClick={this.thisPage}><div className="page-link">3</div></li>
+                            <li id="page-1" className="page-item active" onClick={this.thisPage} value={1}><div className="page-link">1</div></li>
+                            <li id="page-2" className="page-item" onClick={this.thisPage} value={2}><div className="page-link">2</div></li>
+                            <li id="page-3" className="page-item" onClick={this.thisPage} value={3}><div className="page-link">3</div></li>
                             <li className="page-item" onClick={this.nextPage}>
                                 <div className="page-link" href="#" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
@@ -298,6 +331,8 @@ class Main extends Component {
                         </ul>
                     </nav>
                 </div>
+
+                <div id="bottom"></div>
 
                 <RecipeModal modaldata={this.state.modalData} show={this.state.modalShow} onHide={this.modalClose} />
 

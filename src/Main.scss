@@ -1,6 +1,7 @@
 $primary-color: #FFF; 
 $font-stack-header: 'Dosis', sans-serif;
 $font-stack-content: 'Open Sans', sans-serif;
+
 %justify-center {
     display: flex; 
     justify-content: center;
@@ -11,21 +12,27 @@ html, body {
     width: 100%;
     font-family: $font-stack-header;
     background: transparent;
+    scroll-behavior: smooth;
 }
 
 #root {
     width: 100%;
     height: auto;
-    background: url('images/cook-2364221_1920.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: linear-gradient(
+        rgba(138, 169, 208, 0.9), 
+        rgba(138, 169, 208, 0.9)
+    ), url('images/utensils.png');
+    // background-size: auto;
+    // background-repeat: repeat;
 }
 
 #container {
-    padding-top: 100px;
+    padding-top: 40px;
 }
 
+/* ------------------------ */
 /* ---- FORM CONTAINER ---- */
+/* ------------------------ */
 h1 {
     font-family: $font-stack-header;
 }
@@ -33,7 +40,7 @@ h1 {
 .form-container {
     width: 650px;
     padding: 3% 3% 2% 2%;
-    background: rgb(255, 255, 255, 0.7); 
+    background: rgb(255, 255, 255, 0.85); 
     border-radius: 5px;
 
     @media only screen and (max-width: 800px){
@@ -56,25 +63,26 @@ h1 {
 }
 
 .space {
-  padding:0;
+  padding: 0;
 }
 
+/* Submit */
 .btn-secondary {
-    width: 150px;
+    font-family: $font-stack-header;
+    width: 120px;
+    background-color: rgba(138, 169, 208, 0.9);
+    border: none;
 }
 
 .submit-ctn {
     @extend %justify-center;
 }
 
+/* ------------------------ */
 /* ---- SEARCH RESULTS ---- */
-.nav-pag {
-    display: flex; 
-    justify-content: center;
-}
-
-.page-item {
-    cursor: pointer;
+/* ------------------------ */
+#list {
+    scroll-behavior: smooth;
 }
 
 .recipe-ctn {
@@ -105,23 +113,36 @@ h1 {
     padding: 20px 0 0 0;
 }
 
-/* ---- MODAL CONTAINER ---- */
-.modal-body {
-    text-align: center;
+/* Pagination */
+.nav-pag {
+    display: flex; 
+    justify-content: center;
 }
 
-.modal-text {
-    text-align: left;
+.page-item {
+    cursor: pointer;
+}
+
+// .hide {
+//     display: none;
+// }
+
+/* ------------------------- */
+/* ---- MODAL CONTAINER ---- */
+/* ------------------------- */
+.modal-body {
+    text-align: center;
 }
 
 .modal-image {
     width: 50%;
 }
 
-.add-info {
+.recipe-info {
     margin-top: 10px; 
 }
 
+/* Ingredients List */
 .ingredient-list {
     @extend %justify-center;
 }
@@ -130,3 +151,9 @@ h1 {
     width: 80%;
     margin: 20px 0; 
 }
+
+/* Instructions */
+.modal-text {
+    text-align: left;
+}
+

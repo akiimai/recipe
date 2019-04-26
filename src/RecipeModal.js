@@ -48,7 +48,7 @@ class RecipeModal extends Component {
                     </Modal.Header>
                     <Modal.Body className="modal-body">
                         <img className="modal-image" src={this.props.modaldata.image} alt={this.props.modaldata.title} />
-                        <div className="add-info">
+                        <div className="recipe-info">
                             <div><strong>Cook Time: </strong>{this.props.modaldata.readyInMinutes} minutes</div>
                             <div><strong>Servings: </strong>{this.props.modaldata.servings}</div>
                         </div>

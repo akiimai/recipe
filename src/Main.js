@@ -119,6 +119,10 @@ class Main extends Component {
         })
     };
 
+    onScroll = () => {
+        document.getElementById('list').scrollIntoView()
+    }
+
     onSubmit = evt => {
         evt.preventDefault();
 
@@ -129,6 +133,9 @@ class Main extends Component {
                     list: response.results
                 })
                 return response;
+            })
+            .then(() => {
+                this.onScroll();
             })
             .catch(console.log)
 
@@ -227,7 +234,7 @@ class Main extends Component {
         let list = this.state.list
             ? this.state.list.map(item => {
                 return (
-                    <div className="col-sm-4 recipe-item" value={item.id} key={item.id} onClick={(e) => this.onSelect(e, item.id)}>
+                    <div className="col-sm-3 recipe-item" value={item.id} key={item.id} onClick={(e) => this.onSelect(e, item.id)}>
                         <img className="recipe-img" src={"http://webknox.com/recipeImages/" + item.image} alt={item.recipeName} />
                         <h4 className="recipe-title">{item.title}</h4>
                         <div>
@@ -301,7 +308,7 @@ class Main extends Component {
                     Image by <a className="credit-link" href="https://pixabay.com/users/OpenClipart-Vectors-30363/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1296432">OpenClipart-Vectors</a> from <a className="credit-link" href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1296432">Pixabay</a>
                 </div>
 
-                <div className="container" id="list">
+                <div className="container-fluid" id="list">
                     <div className="row recipe-ctn col-sm-12">
                         {list}
                     </div>
